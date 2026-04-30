@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Usman915 | BJJ & MMA Gear</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <title>Md Siddikur | Cybersecurity Specialist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --black: #050505;
-      --dark: #0d0d0d;
-      --card: #111111;
-      --red: #c8102e;
-      --red-dark: #8f0c20;
-      --gold: #d4a843;
-      --white: #f5f5f0;
-      --grey: #888;
-      --border: rgba(255,255,255,0.07);
+      --bg: #050d1a;
+      --surface: #0b1628;
+      --surface2: #112240;
+      --accent: #00c8ff;
+      --accent2: #7b5ea7;
+      --accent3: #00ffa3;
+      --text: #ccd6f6;
+      --muted: #8892b0;
+      --white: #e6f1ff;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,1032 +23,1078 @@
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Barlow', sans-serif;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       overflow-x: hidden;
     }
 
-    /* ─── NOISE TEXTURE OVERLAY ─── */
+    /* ── BACKGROUND ── */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(0,200,255,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 80%, rgba(123,94,167,0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(0,255,163,0.04) 0%, transparent 70%);
       pointer-events: none;
       z-index: 0;
-      opacity: 0.4;
     }
 
-    /* ─── NAV ─── */
+    /* Grid overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    section, nav, footer { position: relative; z-index: 1; }
+
+    /* ── NAVBAR ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      z-index: 100;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 1rem 3rem;
-      background: rgba(5,5,5,0.88);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(5,13,26,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,200,255,0.1);
+      z-index: 1000;
     }
 
-    .logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      letter-spacing: 0.12em;
-      color: var(--white);
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--accent);
+      letter-spacing: -0.5px;
     }
-    .logo span { color: var(--red); }
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2.5rem;
-    }
-    nav ul a {
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
       text-decoration: none;
-      color: var(--grey);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.9rem;
-      letter-spacing: 0.15em;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       transition: color 0.2s;
     }
-    nav ul a:hover { color: var(--white); }
+    .nav-links a:hover { color: var(--accent); }
 
-    .nav-cta {
-      background: var(--red);
-      color: var(--white) !important;
-      padding: 0.45rem 1.2rem;
-      font-size: 0.8rem !important;
-      letter-spacing: 0.18em !important;
-      transition: background 0.2s !important;
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-toggle span {
+      display: block; width: 24px; height: 2px;
+      background: var(--accent); margin: 5px 0;
+      transition: transform 0.3s, opacity 0.3s;
     }
-    .nav-cta:hover { background: var(--red-dark) !important; color: var(--white) !important; }
 
-    /* ─── HERO ─── */
-    .hero {
-      position: relative;
+    /* ── HERO ── */
+    #home {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(200,16,46,0.18) 0%, transparent 65%),
-        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(212,168,67,0.07) 0%, transparent 60%),
-        linear-gradient(160deg, #0a0a0a 0%, #050505 100%);
-      z-index: 0;
-    }
-
-    /* Diagonal stripe accent */
-    .hero-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        -55deg,
-        transparent,
-        transparent 60px,
-        rgba(255,255,255,0.012) 60px,
-        rgba(255,255,255,0.012) 61px
-      );
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 0 3rem;
-      max-width: 780px;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--gold);
-      border: 1px solid rgba(212,168,67,0.4);
-      padding: 0.3rem 0.9rem;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.8s ease both;
-    }
-
-    .hero h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(4rem, 10vw, 9rem);
-      line-height: 0.92;
-      letter-spacing: 0.03em;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.8s 0.15s ease both;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      color: var(--red);
-      display: block;
-    }
-
-    .hero p {
-      font-size: 1.15rem;
-      line-height: 1.65;
-      color: rgba(245,245,240,0.65);
-      max-width: 480px;
-      margin-bottom: 2.5rem;
-      animation: fadeUp 0.8s 0.3s ease both;
-      font-weight: 300;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      animation: fadeUp 0.8s 0.45s ease both;
-    }
-
-    .btn-primary {
-      background: var(--red);
-      color: var(--white);
-      padding: 0.85rem 2.2rem;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.9rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      display: inline-block;
-    }
-    .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
-
-    .btn-outline {
-      border: 1px solid rgba(245,245,240,0.3);
-      color: var(--white);
-      padding: 0.85rem 2.2rem;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.9rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: border-color 0.2s, transform 0.15s;
-      display: inline-block;
-    }
-    .btn-outline:hover { border-color: var(--white); transform: translateY(-2px); }
-
-    /* Floating octagon graphic */
-    .hero-octagon {
-      position: absolute;
-      right: -60px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 580px;
-      height: 580px;
-      opacity: 0.08;
-      z-index: 1;
-      animation: slowSpin 60s linear infinite;
-    }
-
-    @keyframes slowSpin {
-      from { transform: translateY(-50%) rotate(0deg); }
-      to   { transform: translateY(-50%) rotate(360deg); }
-    }
-
-    /* Scroll indicator */
-    .scroll-hint {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      opacity: 0.4;
-      animation: fadeUp 1s 1s ease both;
-    }
-    .scroll-hint span {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-    .scroll-hint svg { animation: bounce 2s ease-in-out infinite; }
-    @keyframes bounce {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(6px); }
-    }
-
-    /* ─── STATS BAR ─── */
-    .stats-bar {
-      background: var(--red);
-      padding: 1.1rem 3rem;
-      display: flex;
-      justify-content: center;
-      gap: 4rem;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 2;
-    }
-    .stat-item {
-      text-align: center;
-    }
-    .stat-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      letter-spacing: 0.05em;
-    }
-    .stat-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      opacity: 0.8;
-    }
-
-    /* ─── SECTIONS SHARED ─── */
-    section {
-      position: relative;
-      z-index: 1;
-    }
-
-    .section-header {
-      text-align: center;
-      padding: 5rem 2rem 3rem;
-    }
-    .section-tag {
-      display: inline-block;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.8rem;
-    }
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      letter-spacing: 0.05em;
-      line-height: 1;
-    }
-    .section-subtitle {
-      margin-top: 0.8rem;
-      font-size: 1rem;
-      color: rgba(245,245,240,0.5);
-      font-weight: 300;
-      max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* ─── PRODUCTS ─── */
-    #products { background: var(--dark); }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      padding: 0 0 5rem;
-    }
-
-    .product-card {
-      background: var(--card);
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    .product-card:hover { transform: scale(1.015); z-index: 10; }
-
-    .product-img {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      display: block;
-      filter: grayscale(30%) contrast(1.1);
-      transition: filter 0.3s ease;
-    }
-    .product-card:hover .product-img { filter: grayscale(0%) contrast(1.1); }
-
-    .product-img-placeholder {
-      width: 100%;
-      aspect-ratio: 4/3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
-      background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
-    }
-
-    .product-info {
-      padding: 1.2rem 1.4rem;
-      border-top: 1px solid var(--border);
-    }
-    .product-cat {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.3rem;
-    }
-    .product-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-    }
-    .product-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .product-price {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
-      letter-spacing: 0.05em;
-      color: var(--gold);
-    }
-    .product-badge {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      background: var(--red);
-      padding: 0.25rem 0.6rem;
-    }
-
-    /* ─── MMA / CULTURE SECTION ─── */
-    #culture {
-      background: var(--black);
-      padding-bottom: 6rem;
-    }
-
-    .culture-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      background: var(--border);
-      margin: 0 3rem;
-    }
-
-    .culture-card {
-      background: var(--card);
-      padding: 3rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .culture-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 4px; height: 100%;
-      background: var(--red);
-    }
-    .culture-card:nth-child(even)::before {
-      background: var(--gold);
-    }
-
-    .culture-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1.2rem;
-    }
-    .culture-card h3 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.8rem;
-    }
-    .culture-card p {
-      color: rgba(245,245,240,0.55);
-      font-size: 0.95rem;
-      line-height: 1.7;
-      font-weight: 300;
-    }
-
-    /* ─── DISCIPLINES ─── */
-    #disciplines {
-      background: var(--dark);
-      padding-bottom: 6rem;
-    }
-
-    .disciplines-wrapper {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      padding: 0 3rem;
-      align-items: center;
-    }
-
-    .discipline-text h2 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      letter-spacing: 0.05em;
-      line-height: 1;
-      margin-bottom: 1.5rem;
-    }
-    .discipline-text h2 span { color: var(--red); }
-    .discipline-text p {
-      color: rgba(245,245,240,0.6);
-      line-height: 1.75;
-      font-size: 1rem;
-      font-weight: 300;
-      margin-bottom: 1.5rem;
-    }
-
-    .discipline-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-    }
-    .discipline-list li {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.1em;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-    .discipline-list li::before {
-      content: '';
-      width: 24px; height: 2px;
-      background: var(--red);
-      flex-shrink: 0;
-    }
-
-    .discipline-visual {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 2px;
-      height: 400px;
-    }
-    .dv-cell {
-      background: var(--card);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: background 0.3s;
-    }
-    .dv-cell:hover { background: #1c1c1c; }
-    .dv-cell span {
-      position: absolute;
-      bottom: 0.8rem; left: 1rem;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--grey);
-    }
-    .dv-cell.featured {
-      grid-column: 1 / -1;
-      font-size: 5rem;
-      background: linear-gradient(135deg, #1a0508 0%, #0d0d0d 100%);
-    }
-    .dv-cell.featured span { color: var(--red); font-size: 0.8rem; }
-
-    /* ─── CONTACT / ABOUT ─── */
-    #contact {
-      background: var(--black);
-      padding: 5rem 3rem 3rem;
-    }
-    .contact-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
+      padding: 120px 48px 80px;
       max-width: 1100px;
       margin: 0 auto;
     }
-    .contact-left h2 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      letter-spacing: 0.05em;
-      line-height: 1;
-      margin-bottom: 1.2rem;
+
+    .hero-content { max-width: 700px; }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(0,200,255,0.3);
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+      background: rgba(0,200,255,0.05);
     }
-    .contact-left h2 span { color: var(--red); }
-    .contact-left p {
-      color: rgba(245,245,240,0.55);
-      line-height: 1.75;
+
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      color: var(--white);
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+
+    .hero-name span {
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-title {
+      font-size: 1.05rem;
       font-weight: 300;
-      margin-bottom: 2.5rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+      letter-spacing: 0.01em;
     }
 
-    /* ─── SOCIAL LINKS ─── */
-    .social-links {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .hero-subtitle {
+      font-size: 1.35rem;
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      font-style: italic;
     }
-    .social-link {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
+
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 28px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
       text-decoration: none;
-      color: var(--white);
-      padding: 1rem 1.4rem;
-      border: 1px solid var(--border);
-      background: var(--card);
-      transition: border-color 0.2s, background 0.2s, transform 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-    .social-link::after {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: var(--red);
-      transform: scaleY(0);
-      transition: transform 0.2s;
-      transform-origin: bottom;
-    }
-    .social-link:hover { border-color: rgba(200,16,46,0.4); background: #161616; transform: translateX(4px); }
-    .social-link:hover::after { transform: scaleY(1); }
-
-    .social-icon {
-      width: 42px; height: 42px;
-      background: rgba(200,16,46,0.12);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .social-icon svg { width: 20px; height: 20px; fill: var(--red); }
-
-    .social-text .s-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.1em;
-      font-weight: 700;
-    }
-    .social-text .s-handle {
-      font-size: 0.82rem;
-      color: var(--grey);
+      transition: all 0.25s;
+      cursor: pointer;
     }
 
-    .social-arrow {
-      margin-left: auto;
-      opacity: 0.3;
-      font-size: 1.1rem;
-      transition: opacity 0.2s, transform 0.2s;
+    .btn-primary {
+      background: var(--accent);
+      color: #050d1a;
+      border: 1px solid var(--accent);
     }
-    .social-link:hover .social-arrow { opacity: 1; transform: translateX(3px); }
-
-    /* Right column visual */
-    .contact-right {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 1.5rem;
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,200,255,0.25);
     }
 
-    .contact-quote {
-      border-left: 3px solid var(--red);
-      padding: 1.2rem 1.5rem;
-      background: var(--card);
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(204,214,246,0.3);
     }
-    .contact-quote p {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
-      letter-spacing: 0.05em;
-      line-height: 1.3;
-      color: var(--white);
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
     }
-    .contact-quote cite {
-      font-family: 'Barlow Condensed', sans-serif;
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 100px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
       font-size: 0.75rem;
+      font-weight: 600;
       letter-spacing: 0.2em;
-      color: var(--grey);
-      font-style: normal;
-      margin-top: 0.5rem;
-      display: block;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
     }
 
-    .belt-display {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -1px;
+      margin-bottom: 48px;
+      line-height: 1.15;
     }
-    .belt {
-      height: 12px;
-      flex: 1;
+
+    .divider {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      margin-bottom: 20px;
       border-radius: 2px;
     }
-    .belt.white { background: #f5f5f0; }
-    .belt.blue { background: #1a4fa0; }
-    .belt.purple { background: #6b35a8; }
-    .belt.brown { background: #7b4a2d; }
-    .belt.black { background: #1a1a1a; border: 1px solid #333; }
-    .belt-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--grey);
-      margin-left: 0.5rem;
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
     }
 
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--dark);
-      border-top: 1px solid var(--border);
-      padding: 2rem 3rem;
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.97rem;
+      margin-bottom: 18px;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,200,255,0.12);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .stat-card:hover { border-color: rgba(0,200,255,0.4); transform: translateY(-4px); }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
+
+    /* ── EXPERTISE ── */
+    #expertise { background: var(--surface); border-top: 1px solid rgba(0,200,255,0.06); border-bottom: 1px solid rgba(0,200,255,0.06); }
+    #expertise > .section { padding: 100px 48px; }
+
+    .expertise-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .expertise-card {
+      background: var(--bg);
+      border: 1px solid rgba(0,200,255,0.1);
+      border-radius: 12px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s;
+    }
+
+    .expertise-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .expertise-card:hover { transform: translateY(-6px); border-color: rgba(0,200,255,0.3); }
+    .expertise-card:hover::before { opacity: 1; }
+
+    .expertise-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .expertise-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .expertise-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 60px;
+    }
+
+    .skill-item { margin-bottom: 8px; }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .skill-name {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .skill-pct {
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .skill-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      transform-origin: left;
+      animation: barGrow 1.2s ease forwards;
+      animation-play-state: paused;
+    }
+
+    @keyframes barGrow {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    .skill-bar-fill.animate { animation-play-state: running; }
+
+    /* ── RESEARCH ── */
+    #research { background: var(--surface); border-top: 1px solid rgba(0,200,255,0.06); border-bottom: 1px solid rgba(0,200,255,0.06); }
+
+    .research-list { display: flex; flex-direction: column; gap: 20px; }
+
+    .research-item {
+      background: var(--bg);
+      border: 1px solid rgba(0,200,255,0.1);
+      border-radius: 12px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .research-item:hover { border-color: rgba(0,200,255,0.35); transform: translateX(6px); }
+
+    .research-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: rgba(0,200,255,0.2);
+      min-width: 36px;
+      line-height: 1;
+    }
+
+    .research-body h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .research-body p {
+      font-size: 0.83rem;
+      color: var(--muted);
+    }
+
+    .research-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 2px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,200,255,0.3);
+      color: var(--accent);
+      margin-top: 8px;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,200,255,0.1);
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.25s, border-color 0.25s;
+    }
+
+    .project-card:hover { transform: translateY(-6px); border-color: rgba(0,255,163,0.3); }
+
+    .project-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      background: rgba(0,200,255,0.1);
+    }
+
+    .project-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .project-card p {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .project-link {
+      font-size: 0.78rem;
+      color: var(--accent3);
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .project-link:hover { text-decoration: underline; }
+
+    /* ── EVENTS ── */
+    .events-timeline { display: flex; flex-direction: column; gap: 0; }
+
+    .event-item {
+      display: flex;
+      gap: 28px;
+      padding-bottom: 36px;
+      position: relative;
+    }
+
+    .event-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px; top: 40px; bottom: 0;
+      width: 1px;
+      background: rgba(0,200,255,0.15);
+    }
+
+    .event-dot {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(0,200,255,0.4);
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+
+    .event-body h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .event-body p {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── AWARDS ── */
+    .awards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .award-card {
+      background: var(--surface);
+      border: 1px solid rgba(123,94,167,0.2);
+      border-radius: 12px;
+      padding: 28px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
+      gap: 20px;
+      transition: transform 0.25s, border-color 0.25s;
     }
-    footer .logo { font-size: 1.3rem; }
-    footer p {
-      font-size: 0.8rem;
-      color: var(--grey);
-      font-family: 'Barlow Condensed', sans-serif;
-      letter-spacing: 0.1em;
+
+    .award-card:hover { transform: translateY(-4px); border-color: rgba(123,94,167,0.5); }
+
+    .award-icon {
+      font-size: 2.5rem;
+      flex-shrink: 0;
     }
-    .footer-links {
+
+    .award-body h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .award-body p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--surface); border-top: 1px solid rgba(0,200,255,0.08); }
+
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .contact-info p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .contact-detail {
       display: flex;
-      gap: 1.5rem;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
     }
-    .footer-links a {
-      font-family: 'Barlow Condensed', sans-serif;
+
+    .contact-detail .icon { font-size: 1.1rem; }
+
+    .contact-detail span {
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .contact-form { display: flex; flex-direction: column; gap: 14px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .form-group label {
       font-size: 0.75rem;
-      letter-spacing: 0.15em;
+      font-weight: 600;
       text-transform: uppercase;
-      color: var(--grey);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--white); }
-
-    /* ─── ANIMATIONS ─── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      letter-spacing: 0.1em;
+      color: var(--muted);
     }
 
-    .reveal {
+    .form-group input,
+    .form-group textarea {
+      background: var(--bg);
+      border: 1px solid rgba(0,200,255,0.15);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(136,146,176,0.5); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px 48px;
+      border-top: 1px solid rgba(0,200,255,0.06);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    footer span { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; top: 64px; left: 0; right: 0;
+        background: var(--surface); padding: 24px;
+        border-bottom: 1px solid rgba(0,200,255,0.1);
+        gap: 16px;
+      }
+
+      #home, .section { padding: 100px 24px 60px; }
+      #home { padding-top: 120px; }
+
+      .about-grid,
+      .contact-wrapper { grid-template-columns: 1fr; gap: 36px; }
+
+      .expertise-grid,
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+
+      .skills-grid { grid-template-columns: 1fr; }
+
+      .awards-grid { grid-template-columns: 1fr; }
+
+      .form-row { grid-template-columns: 1fr; }
     }
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 900px) {
-      nav { padding: 1rem 1.5rem; }
-      nav ul { display: none; }
-      .hero-content { padding: 0 1.5rem; }
-      .hero-octagon { display: none; }
-      .culture-grid, .disciplines-wrapper, .contact-inner {
-        grid-template-columns: 1fr;
-        margin: 0 1.5rem;
-        padding: 0;
-      }
-      .discipline-visual { display: none; }
-      .stats-bar { gap: 2rem; padding: 1rem 1.5rem; }
-      footer { flex-direction: column; text-align: center; }
-      .contact-right { display: none; }
+    @media (max-width: 580px) {
+      .expertise-grid,
+      .projects-grid { grid-template-columns: 1fr; }
+
+      .about-stats { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ─── NAV ─── -->
+  <!-- NAVBAR -->
   <nav>
-    <div class="logo">Usman<span>915</span></div>
-    <ul>
-      <li><a href="#products">Products</a></li>
-      <li><a href="#disciplines">Disciplines</a></li>
-      <li><a href="#culture">Culture</a></li>
-      <li><a href="#contact" class="nav-cta">Connect</a></li>
+    <div class="nav-logo">MS.</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#awards">Awards</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
-  <!-- ─── HERO ─── -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-
-    <!-- Octagon SVG -->
-    <svg class="hero-octagon" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="70,5 130,5 195,70 195,130 130,195 70,195 5,130 5,70"
-        stroke="white" stroke-width="2" fill="none"/>
-      <polygon points="75,20 125,20 180,75 180,125 125,180 75,180 20,125 20,75"
-        stroke="white" stroke-width="0.5" fill="none"/>
-    </svg>
-
-    <div class="hero-content">
-      <div class="hero-badge">Elite Martial Arts Gear</div>
-      <h1>
-        Train Hard.<br>
-        <em>Fight Harder.</em>
-      </h1>
-      <p>Premium BJJ Gi & No-Gi gear for grapplers who demand more from their equipment. Built for the mat. Designed to dominate.</p>
-      <div class="hero-buttons">
-        <a href="#products" class="btn-primary">Shop Gear</a>
-        <a href="#disciplines" class="btn-outline">Our Story</a>
+  <!-- HERO -->
+  <section id="home">
+    <div class="hero-content fade-in">
+      <div class="hero-tag">Available for Research Collaboration</div>
+      <h1 class="hero-name">Md<br><span>Siddikur</span></h1>
+      <p class="hero-title">Cybersecurity &amp; Network Security Specialist &nbsp;·&nbsp; Adjunct Instructor &nbsp;·&nbsp; Academic Researcher</p>
+      <p class="hero-subtitle">Bridging Technology, Education, and Innovation</p>
+      <div class="hero-btns">
+        <a href="#research" class="btn btn-primary">View Research</a>
+        <a href="#contact" class="btn btn-outline">Contact Me</a>
       </div>
-    </div>
-
-    <div class="scroll-hint">
-      <span>Scroll</span>
-      <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
-        <path d="M7 0v16M1 10l6 6 6-6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
     </div>
   </section>
 
-  <!-- ─── STATS ─── -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-num">GI</div>
-      <div class="stat-label">Competition Ready</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">NO-GI</div>
-      <div class="stat-label">High Performance</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">MMA</div>
-      <div class="stat-label">Full Combat</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">100%</div>
-      <div class="stat-label">Quality Tested</div>
-    </div>
-  </div>
-
-  <!-- ─── PRODUCTS ─── -->
-  <section id="products">
-    <div class="section-header">
-      <div class="section-tag">The Collection</div>
-      <h2 class="section-title">Our Gear</h2>
-      <p class="section-subtitle">From the mat to the cage — equipment crafted for peak performance.</p>
-    </div>
-
-    <div class="products-grid">
-      <!-- GI Products -->
-      <div class="product-card reveal">
-        <div class="product-img-placeholder">🥋</div>
-        <div class="product-info">
-          <div class="product-cat">BJJ Gi</div>
-          <div class="product-name">Competition Gi — White</div>
-          <div class="product-footer">
-            <div class="product-price">$149</div>
-            <div class="product-badge">IBJJF Legal</div>
-          </div>
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section">
+      <div class="about-grid">
+        <div class="about-text fade-in">
+          <div class="section-label">About Me</div>
+          <div class="divider"></div>
+          <h2 class="section-title">Decade of Impact in Tech &amp; Education</h2>
+          <p>I am Md Siddikur, an Adjunct Instructor, Cybersecurity &amp; Network Security Specialist, and Academic Researcher with over a decade of experience spanning academia, IT infrastructure, and international project management.</p>
+          <p>My work bridges technology, education, and leadership — focusing on secure and innovative systems that prepare the next generation of cybersecurity professionals.</p>
+          <a href="#" class="btn btn-outline" style="margin-top:12px;">Download CV</a>
         </div>
-      </div>
-
-      <div class="product-card reveal">
-        <div class="product-img-placeholder" style="background:linear-gradient(135deg,#0d1a0d,#050505)">🥋</div>
-        <div class="product-info">
-          <div class="product-cat">BJJ Gi</div>
-          <div class="product-name">Competition Gi — Black</div>
-          <div class="product-footer">
-            <div class="product-price">$149</div>
-            <div class="product-badge">New Drop</div>
+        <div class="about-stats fade-in">
+          <div class="stat-card">
+            <div class="stat-num">10+</div>
+            <div class="stat-label">Years Experience</div>
           </div>
-        </div>
-      </div>
-
-      <div class="product-card reveal">
-        <div class="product-img-placeholder" style="background:linear-gradient(135deg,#0d0d1a,#050505)">🥋</div>
-        <div class="product-info">
-          <div class="product-cat">BJJ Gi</div>
-          <div class="product-name">Lightweight Gi — Blue</div>
-          <div class="product-footer">
-            <div class="product-price">$159</div>
-            <div class="product-badge">Bestseller</div>
+          <div class="stat-card">
+            <div class="stat-num">20+</div>
+            <div class="stat-label">Publications</div>
           </div>
-        </div>
-      </div>
-
-      <!-- No-Gi Products -->
-      <div class="product-card reveal">
-        <div class="product-img-placeholder">👕</div>
-        <div class="product-info">
-          <div class="product-cat">No-Gi</div>
-          <div class="product-name">Rashguard — Long Sleeve</div>
-          <div class="product-footer">
-            <div class="product-price">$65</div>
-            <div class="product-badge">UV+ Fabric</div>
+          <div class="stat-card">
+            <div class="stat-num">15+</div>
+            <div class="stat-label">Projects Delivered</div>
           </div>
-        </div>
-      </div>
-
-      <div class="product-card reveal">
-        <div class="product-img-placeholder">🩳</div>
-        <div class="product-info">
-          <div class="product-cat">No-Gi</div>
-          <div class="product-name">Grappling Shorts</div>
-          <div class="product-footer">
-            <div class="product-price">$55</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card reveal">
-        <div class="product-img-placeholder">🥊</div>
-        <div class="product-info">
-          <div class="product-cat">MMA</div>
-          <div class="product-name">Fight Shorts — Pro Series</div>
-          <div class="product-footer">
-            <div class="product-price">$75</div>
-            <div class="product-badge">Pro</div>
+          <div class="stat-card">
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Awards Won</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── DISCIPLINES ─── -->
-  <section id="disciplines">
-    <div class="section-header">
-      <div class="section-tag">The Art</div>
-      <h2 class="section-title">Every Discipline</h2>
-    </div>
-    <div class="disciplines-wrapper">
-      <div class="discipline-text reveal">
-        <h2>Built For <span>Grapplers.</span><br>Made For War.</h2>
-        <p>Whether you're competing at the highest level or grinding on the mats every day, our gear is engineered to move with your body, resist the toughest conditions, and last through thousands of rolls.</p>
-        <p>We serve BJJ practitioners at every rank — from white belt beginners to black belt competitors — as well as wrestlers, MMA fighters, and anyone who loves grappling.</p>
-        <ul class="discipline-list">
-          <li>Brazilian Jiu-Jitsu (Gi & No-Gi)</li>
-          <li>Mixed Martial Arts (MMA)</li>
-          <li>Wrestling & Submission Grappling</li>
-          <li>Muay Thai & Striking Crossover</li>
-          <li>Competition & Training Gear</li>
-        </ul>
-      </div>
-      <div class="discipline-visual reveal">
-        <div class="dv-cell featured">
-          🏆
-          <span>Competition Ready</span>
+  <!-- EXPERTISE -->
+  <section id="expertise">
+    <div class="section">
+      <div class="section-label fade-in">What I Do</div>
+      <div class="divider fade-in"></div>
+      <h2 class="section-title fade-in">Areas of Expertise</h2>
+      <div class="expertise-grid">
+        <div class="expertise-card fade-in">
+          <div class="expertise-icon">🔐</div>
+          <h3>Cybersecurity &amp; Network Security</h3>
+          <p>Threat modeling, vulnerability assessment, intrusion detection, and building resilient security architectures.</p>
         </div>
-        <div class="dv-cell">
-          🥋
-          <span>BJJ Gi</span>
+        <div class="expertise-card fade-in">
+          <div class="expertise-icon">🤖</div>
+          <h3>AI &amp; Machine Learning</h3>
+          <p>Applying ML-based approaches to real-time threat detection, anomaly analysis, and predictive security systems.</p>
         </div>
-        <div class="dv-cell">
-          💪
-          <span>No-Gi</span>
+        <div class="expertise-card fade-in">
+          <div class="expertise-icon">🖧</div>
+          <h3>IT Infrastructure</h3>
+          <p>Designing and managing enterprise-grade networks, cloud environments, and hybrid infrastructure solutions.</p>
+        </div>
+        <div class="expertise-card fade-in">
+          <div class="expertise-icon">🎓</div>
+          <h3>Teaching &amp; Curriculum</h3>
+          <p>Developing cybersecurity curricula and instructing students at university level on cutting-edge technologies.</p>
+        </div>
+        <div class="expertise-card fade-in">
+          <div class="expertise-icon">📄</div>
+          <h3>Research &amp; Publications</h3>
+          <p>Publishing peer-reviewed papers and conference presentations in cybersecurity and network security domains.</p>
+        </div>
+        <div class="expertise-card fade-in">
+          <div class="expertise-icon">🌐</div>
+          <h3>Leadership &amp; Management</h3>
+          <p>Leading cross-functional teams and international projects with a strategic and results-driven mindset.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── CULTURE ─── -->
-  <section id="culture">
-    <div class="section-header">
-      <div class="section-tag">MMA & Grappling</div>
-      <h2 class="section-title">The Culture</h2>
-      <p class="section-subtitle">Martial arts is more than sport — it's a way of life.</p>
-    </div>
-    <div class="culture-grid">
-      <div class="culture-card reveal">
-        <div class="culture-icon">🥊</div>
-        <h3>Striking Meets Grappling</h3>
-        <p>MMA is the ultimate test of a martial artist. Our gear bridges the gap between the striking and grappling worlds, letting you train across disciplines without compromise.</p>
-      </div>
-      <div class="culture-card reveal">
-        <div class="culture-icon">🏅</div>
-        <h3>Competition Proven</h3>
-        <p>Gear designed to meet IBJJF, ADCC, and major MMA competition standards. When the stakes are highest, your equipment should never be the weak link.</p>
-      </div>
-      <div class="culture-card reveal">
-        <div class="culture-icon">⚡</div>
-        <h3>High Performance Fabrics</h3>
-        <p>We use only competition-grade fabrics — pearl weave cotton for Gis, moisture-wicking lycra blends for rashguards, and four-way stretch panels for fight shorts.</p>
-      </div>
-      <div class="culture-card reveal">
-        <div class="culture-icon">🎖️</div>
-        <h3>The BJJ Lifestyle</h3>
-        <p>From white belt to black belt, the journey on the mat builds character, discipline, and resilience. We're proud to equip that journey at every stage of the belt system.</p>
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section">
+      <div class="section-label fade-in">Technical Proficiency</div>
+      <div class="divider fade-in"></div>
+      <h2 class="section-title fade-in">Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-item fade-in">
+          <div class="skill-header">
+            <span class="skill-name">Cybersecurity</span>
+            <span class="skill-pct">95%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:95%"></div></div>
+        </div>
+        <div class="skill-item fade-in">
+          <div class="skill-header">
+            <span class="skill-name">Network Security</span>
+            <span class="skill-pct">92%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:92%"></div></div>
+        </div>
+        <div class="skill-item fade-in">
+          <div class="skill-header">
+            <span class="skill-name">Python</span>
+            <span class="skill-pct">88%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:88%"></div></div>
+        </div>
+        <div class="skill-item fade-in">
+          <div class="skill-header">
+            <span class="skill-name">Machine Learning</span>
+            <span class="skill-pct">82%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:82%"></div></div>
+        </div>
+        <div class="skill-item fade-in">
+          <div class="skill-header">
+            <span class="skill-name">Cloud Computing</span>
+            <span class="skill-pct">78%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:78%"></div></div>
+        </div>
+        <div class="skill-item fade-in">
+          <div class="skill-header">
+            <span class="skill-name">Academic Research</span>
+            <span class="skill-pct">90%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── CONTACT / SOCIAL ─── -->
+  <!-- RESEARCH -->
+  <section id="research">
+    <div class="section">
+      <div class="section-label fade-in">Publications</div>
+      <div class="divider fade-in"></div>
+      <h2 class="section-title fade-in">Research &amp; Publications</h2>
+      <div class="research-list">
+        <div class="research-item fade-in">
+          <div class="research-num">01</div>
+          <div class="research-body">
+            <h4>ML-Based Intrusion Detection in Modern Network Environments</h4>
+            <p>Journal of Cybersecurity Research · 2024</p>
+            <span class="research-tag">Network Security</span>
+          </div>
+        </div>
+        <div class="research-item fade-in">
+          <div class="research-num">02</div>
+          <div class="research-body">
+            <h4>Threat Intelligence Frameworks for Cloud-Native Applications</h4>
+            <p>IEEE International Conference on Cloud Computing · 2023</p>
+            <span class="research-tag">Cloud Security</span>
+          </div>
+        </div>
+        <div class="research-item fade-in">
+          <div class="research-num">03</div>
+          <div class="research-body">
+            <h4>Adaptive Curriculum Design for Cybersecurity Education</h4>
+            <p>International Journal of Educational Technology · 2022</p>
+            <span class="research-tag">Education</span>
+          </div>
+        </div>
+        <div class="research-item fade-in">
+          <div class="research-num">04</div>
+          <div class="research-body">
+            <h4>Real-Time Anomaly Detection Using Deep Learning</h4>
+            <p>ACM SIGCOMM Workshop · 2022</p>
+            <span class="research-tag">AI &amp; ML</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section">
+      <div class="section-label fade-in">Portfolio</div>
+      <div class="divider fade-in"></div>
+      <h2 class="section-title fade-in">Featured Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card fade-in">
+          <div class="project-icon">🛡️</div>
+          <h3>AI Cybersecurity System</h3>
+          <p>An ML-based threat detection platform that identifies and responds to security incidents in real time using behavioral analytics.</p>
+          <a href="#" class="project-link">View Project →</a>
+        </div>
+        <div class="project-card fade-in">
+          <div class="project-icon">📡</div>
+          <h3>Intrusion Detection Model</h3>
+          <p>A real-time network security system using deep learning to detect anomalies and unauthorized access patterns across enterprise networks.</p>
+          <a href="#" class="project-link">View Project →</a>
+        </div>
+        <div class="project-card fade-in">
+          <div class="project-icon">💻</div>
+          <h3>Digital Learning Platform</h3>
+          <p>An interactive academic learning management system tailored for cybersecurity coursework, labs, and assessment modules.</p>
+          <a href="#" class="project-link">View Project →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="events">
+    <div class="section">
+      <div class="section-label fade-in">Engagements</div>
+      <div class="divider fade-in"></div>
+      <h2 class="section-title fade-in">Events &amp; Speaking</h2>
+      <div class="events-timeline">
+        <div class="event-item fade-in">
+          <div class="event-dot">🎤</div>
+          <div class="event-body">
+            <h4>IEEE International Conference on Cybersecurity — Keynote Speaker</h4>
+            <p>Presented research on AI-driven threat detection to an audience of 500+ security professionals and academics. · 2024</p>
+          </div>
+        </div>
+        <div class="event-item fade-in">
+          <div class="event-dot">🧑‍💻</div>
+          <div class="event-body">
+            <h4>Network Security Workshop — Workshop Facilitator</h4>
+            <p>Conducted hands-on workshop on intrusion detection systems for graduate students and industry practitioners. · 2023</p>
+          </div>
+        </div>
+        <div class="event-item fade-in">
+          <div class="event-dot">🏛️</div>
+          <div class="event-body">
+            <h4>ACM Panel Discussion — Panelist</h4>
+            <p>Participated in a panel on the future of cybersecurity education and the role of AI in curriculum development. · 2022</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AWARDS -->
+  <section id="awards">
+    <div class="section" style="background:var(--surface); border-radius:20px; padding: 60px 48px;">
+      <div class="section-label fade-in">Recognition</div>
+      <div class="divider fade-in"></div>
+      <h2 class="section-title fade-in">Awards &amp; Honors</h2>
+      <div class="awards-grid">
+        <div class="award-card fade-in">
+          <div class="award-icon">🏆</div>
+          <div class="award-body">
+            <h4>Best Research Award</h4>
+            <p>Recognized for outstanding contribution to cybersecurity research. · 2023</p>
+          </div>
+        </div>
+        <div class="award-card fade-in">
+          <div class="award-icon">🎖️</div>
+          <div class="award-body">
+            <h4>Academic Excellence Award</h4>
+            <p>Awarded for exceptional performance in teaching and academic leadership. · 2022</p>
+          </div>
+        </div>
+        <div class="award-card fade-in">
+          <div class="award-icon">🌟</div>
+          <div class="award-body">
+            <h4>IEEE Senior Member</h4>
+            <p>Elevated to IEEE Senior Member status for sustained contributions to engineering. · 2021</p>
+          </div>
+        </div>
+        <div class="award-card fade-in">
+          <div class="award-icon">📚</div>
+          <div class="award-body">
+            <h4>Outstanding Educator Award</h4>
+            <p>Presented by Pacific States University for curriculum innovation in cybersecurity. · 2020</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
   <section id="contact">
-    <div class="section-header">
-      <div class="section-tag">Connect</div>
-      <h2 class="section-title">Find Me Online</h2>
-    </div>
-    <div class="contact-inner">
-      <div class="contact-left reveal">
-        <h2>Follow the <span>Journey</span></h2>
-        <p>Stay connected for new drops, training content, and updates from the mats. Follow on all platforms to be the first to know.</p>
-        <div class="social-links">
-
-          <!-- Twitter/X -->
-          <a href="https://twitter.com/Usman915" target="_blank" rel="noopener" class="social-link">
-            <div class="social-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-            </div>
-            <div class="social-text">
-              <div class="s-name">Twitter / X</div>
-              <div class="s-handle">@Usman915</div>
-            </div>
-            <div class="social-arrow">→</div>
-          </a>
-
-          <!-- LinkedIn -->
-          <a href="https://www.linkedin.com/in/usman915" target="_blank" rel="noopener" class="social-link">
-            <div class="social-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-            </div>
-            <div class="social-text">
-              <div class="s-name">LinkedIn</div>
-              <div class="s-handle">Professional Network</div>
-            </div>
-            <div class="social-arrow">→</div>
-          </a>
-
-          <!-- GitHub -->
-          <a href="https://github.com/Usman915" target="_blank" rel="noopener" class="social-link">
-            <div class="social-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-              </svg>
-            </div>
-            <div class="social-text">
-              <div class="s-name">GitHub</div>
-              <div class="s-handle">Usman915</div>
-            </div>
-            <div class="social-arrow">→</div>
-          </a>
-
-        </div>
-      </div>
-
-      <div class="contact-right reveal">
-        <div class="contact-quote">
-          <p>"A black belt is a white belt who never quit."</p>
-          <cite>— BJJ Proverb</cite>
-        </div>
-        <div class="contact-quote" style="border-left-color: var(--gold);">
-          <p>"Everybody has a plan until they get punched in the mouth."</p>
-          <cite>— Mike Tyson</cite>
-        </div>
-        <div>
-          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey);margin-bottom:0.8rem;">The Belt System</p>
-          <div class="belt-display">
-            <div class="belt white"></div>
-            <div class="belt blue"></div>
-            <div class="belt purple"></div>
-            <div class="belt brown"></div>
-            <div class="belt black"></div>
-            <div class="belt-label">White → Black</div>
+    <div class="section">
+      <div class="section-label fade-in">Get in Touch</div>
+      <div class="divider fade-in"></div>
+      <h2 class="section-title fade-in">Contact Me</h2>
+      <div class="contact-wrapper">
+        <div class="contact-info fade-in">
+          <h3>Let's Collaborate</h3>
+          <p>I'm open to research collaborations, speaking engagements, consulting opportunities, and academic partnerships.</p>
+          <div class="contact-detail">
+            <span class="icon">📍</span>
+            <span>Pacific States University, California, USA</span>
+          </div>
+          <div class="contact-detail">
+            <span class="icon">✉️</span>
+            <span>siddikur@pacificstatesuniversity.edu</span>
+          </div>
+          <div class="contact-detail">
+            <span class="icon">🔗</span>
+            <span>linkedin.com/in/mdsiddikur</span>
           </div>
         </div>
+        <form class="contact-form fade-in" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" placeholder="you@email.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" placeholder="Research collaboration, speaking, etc." />
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea rows="5" placeholder="Tell me about your project or inquiry…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send Message</button>
+          <div id="form-msg" style="display:none; font-size:0.85rem; color:var(--accent3); margin-top:8px;">✓ Message sent! I'll be in touch soon.</div>
+        </form>
       </div>
     </div>
   </section>
 
-  <!-- ─── FOOTER ─── -->
+  <!-- FOOTER -->
   <footer>
-    <div class="logo">Usman<span>915</span></div>
-    <p>© 2025 Usman915 · BJJ & MMA Gear · All rights reserved</p>
-    <div class="footer-links">
-      <a href="https://twitter.com/Usman915" target="_blank">Twitter</a>
-      <a href="https://www.linkedin.com/in/usman915" target="_blank">LinkedIn</a>
-      <a href="https://github.com/Usman915" target="_blank">GitHub</a>
-    </div>
+    <p>© 2025 <span>Md Siddikur</span>. All rights reserved. · Pacific States University, California</p>
   </footer>
 
-  <!-- ─── SCROLL REVEAL ─── -->
   <script>
-    const revealEls = document.querySelectorAll('.reveal');
+    // Nav toggle
+    const toggle = document.getElementById('navToggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => links.classList.remove('open'));
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Intersection Observer for fade-in + skill bars
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          entry.target.classList.add('visible');
+          // Animate skill bars when they enter view
+          entry.target.querySelectorAll && entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+            bar.classList.add('animate');
+          });
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
-    revealEls.forEach(el => observer.observe(el));
-  </script>
+    }, { threshold: 0.15 });
 
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Trigger hero immediately
+    setTimeout(() => {
+      document.querySelector('#home .fade-in')?.classList.add('visible');
+    }, 100);
+
+    // Contact form mock submit
+    function handleSubmit(e) {
+      e.preventDefault();
+      const msg = document.getElementById('form-msg');
+      msg.style.display = 'block';
+      e.target.reset();
+      setTimeout(() => { msg.style.display = 'none'; }, 4000);
+    }
+  </script>
 </body>
 </html>
