@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calcify — Your Daily Calculator Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f0eb;
+      --surface: #fffcf9;
+      --surface2: #f0ebe4;
+      --border: rgba(0,0,0,0.08);
+      --text: #1a1410;
+      --muted: #8a7e74;
+      --accent: #c0714a;
+      --accent2: #4a8fa8;
+      --accent3: #6a9e6f;
+      --tip: #7b5ea7;
+      --radius: 20px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px 72px;
+    }
+
+    /* Decorative circles */
+    .deco {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .deco1 { width: 340px; height: 340px; background: #e8d5c4; opacity: 0.5; top: -120px; right: -80px; }
+    .deco2 { width: 260px; height: 260px; background: #c9dce6; opacity: 0.4; bottom: -80px; left: -60px; }
+    .deco3 { width: 180px; height: 180px; background: #d4e8d5; opacity: 0.35; top: 40%; left: -60px; }
+
+    .wrapper { position: relative; z-index: 1; width: 100%; max-width: 440px; }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 36px; }
+    .header .icon-row { font-size: 1.8rem; margin-bottom: 10px; display: flex; justify-content: center; gap: 6px; }
+    .header .icon-row span { display: inline-block; animation: bob 2.5s ease-in-out infinite; }
+    .header .icon-row span:nth-child(2) { animation-delay: 0.3s; }
+    .header .icon-row span:nth-child(3) { animation-delay: 0.6s; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .header h1 em { font-style: italic; color: var(--accent); }
+    .header p { color: var(--muted); font-size: 0.88rem; font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: var(--surface);
+      border-radius: 50px;
+      padding: 5px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 10px 4px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.03em;
+    }
+    .tab-btn.active { background: var(--accent); color: #fff; box-shadow: 0 3px 14px rgba(192,113,74,0.35); }
+    .tab-btn:hover:not(.active) { color: var(--text); background: var(--surface2); }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      display: none;
+      animation: rise 0.35s cubic-bezier(.23,1,.32,1);
+    }
+    .card.active { display: block; }
+    @keyframes rise { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+    .card-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 4px; color: var(--text); }
+    .card-sub { color: var(--muted); font-size: 0.84rem; font-weight: 300; margin-bottom: 24px; }
+
+    /* Form */
+    label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    input[type="date"], input[type="text"], input[type="number"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1.5px solid transparent;
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 16px;
+      color-scheme: light;
+    }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(192,113,74,0.12); }
+    .error-msg { color: #c0392b; font-size: 0.81rem; margin-top: -10px; margin-bottom: 14px; display: none; font-weight: 500; }
+    .error-msg.show { display: block; }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.01em;
+    }
+    .btn-age { background: var(--accent); color: #fff; box-shadow: 0 4px 18px rgba(192,113,74,0.3); }
+    .btn-age:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(192,113,74,0.4); }
+    .btn-tip { background: var(--tip); color: #fff; box-shadow: 0 4px 18px rgba(123,94,167,0.3); }
+    .btn-tip:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(123,94,167,0.4); }
+
+    /* ── AGE RESULT ── */
+    .age-result { margin-top: 24px; display: none; }
+    .age-result.show { display: block; animation: rise 0.3s ease; }
+    .age-banner {
+      background: linear-gradient(135deg, #f9ede5, #e8f2f7);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-align: center;
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+    .age-num { font-family: 'Playfair Display', serif; font-size: 4.5rem; color: var(--accent); line-height: 1; }
+    .age-lbl { color: var(--muted); font-size: 0.85rem; font-weight: 300; margin-top: 2px; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat-box { background: var(--surface2); border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--border); }
+    .stat-val { font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--accent2); }
+    .stat-key { font-size: 0.75rem; color: var(--muted); font-weight: 500; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ── TIP CALCULATOR ── */
+    .tip-row { display: flex; gap: 10px; margin-bottom: 16px; }
+    .tip-pct-btn {
+      flex: 1;
+      background: var(--surface2);
+      border: 1.5px solid transparent;
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 10px 4px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tip-pct-btn.active, .tip-pct-btn:hover { background: #f0e8f8; border-color: var(--tip); color: var(--tip); }
+    .tip-result { margin-top: 20px; display: none; }
+    .tip-result.show { display: block; animation: rise 0.3s ease; }
+    .tip-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .tip-card { background: var(--surface2); border-radius: 12px; padding: 14px 12px; text-align: center; border: 1px solid var(--border); }
+    .tip-card.highlight { background: #f0e8f8; border-color: rgba(123,94,167,0.25); }
+    .tip-card-val { font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--tip); }
+    .tip-card.highlight .tip-card-val { color: var(--tip); }
+    .tip-card-lbl { font-size: 0.74rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+    /* ── CALCULATOR ── */
+    .calc-display {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      text-align: right;
+      margin-bottom: 14px;
+    }
+    .calc-expr { color: var(--muted); font-size: 0.84rem; min-height: 1.1em; word-break: break-all; }
+    .calc-val { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--text); line-height: 1.1; word-break: break-all; transition: font-size 0.15s; }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+    .calc-btn {
+      border: none;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      padding: 17px 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .calc-btn:active { transform: scale(0.93); }
+    .calc-btn.num  { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .calc-btn.num:hover { background: #e8e0d8; }
+    .calc-btn.op   { background: #fceee7; color: var(--accent); border: 1px solid rgba(192,113,74,0.2); }
+    .calc-btn.op:hover { background: #f5ddd0; }
+    .calc-btn.fn   { background: #e4edf2; color: var(--accent2); border: 1px solid rgba(74,143,168,0.2); font-size: 0.92rem; }
+    .calc-btn.fn:hover { background: #d2e5ee; }
+    .calc-btn.eq   { background: var(--accent); color: #fff; box-shadow: 0 3px 14px rgba(192,113,74,0.3); border: none; }
+    .calc-btn.eq:hover { box-shadow: 0 6px 20px rgba(192,113,74,0.4); }
+    .calc-btn.zero { grid-column: span 2; text-align: left; padding-left: 22px; }
+
+    footer { text-align: center; margin-top: 36px; color: var(--muted); font-size: 0.78rem; position: relative; z-index: 1; font-weight: 300; letter-spacing: 0.04em; }
+    footer em { font-style: italic; color: var(--accent); font-family: 'Playfair Display', serif; }
+
+    @media(max-width:380px) {
+      .header h1 { font-size: 2.4rem; }
+      .calc-val { font-size: 2.2rem; }
+      .calc-btn { padding: 14px 4px; font-size: 0.95rem; }
+      .card { padding: 20px 16px; }
+      .age-num { font-size: 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deco deco1"></div>
+<div class="deco deco2"></div>
+<div class="deco deco3"></div>
+
+<div class="wrapper">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="icon-row">
+      <span>🎂</span><span>💡</span><span>🧮</span>
+    </div>
+    <h1>Cal<em>ci</em>fy</h1>
+    <p>Age · Tips · Everyday arithmetic</p>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="age" role="tab">🎂 Age</button>
+    <button class="tab-btn" data-tab="tip" role="tab">💡 Tip</button>
+    <button class="tab-btn" data-tab="calc" role="tab">🧮 Calc</button>
+  </div>
+
+  <!-- ── AGE CALCULATOR ── -->
+  <div class="card active" id="tab-age">
+    <div class="card-eyebrow">Age Calculator</div>
+    <div class="card-title">How old are you?</div>
+    <div class="card-sub">Exact years, months, weeks, and more</div>
+
+    <label for="dob">Your date of birth</label>
+    <input type="date" id="dob"/>
+    <div class="error-msg" id="dob-error">Please enter a valid date of birth.</div>
+
+    <label for="calc-date">Calculate as of</label>
+    <input type="date" id="calc-date"/>
+
+    <button class="btn btn-age" id="age-btn">✨ Calculate My Age</button>
+
+    <div class="age-result" id="age-result">
+      <div class="age-banner">
+        <div class="age-num" id="age-years">—</div>
+        <div class="age-lbl">years old</div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-val" id="res-months">—</div><div class="stat-key">Months</div></div>
+        <div class="stat-box"><div class="stat-val" id="res-weeks">—</div><div class="stat-key">Weeks</div></div>
+        <div class="stat-box"><div class="stat-val" id="res-days">—</div><div class="stat-key">Days</div></div>
+        <div class="stat-box"><div class="stat-val" id="res-hours">—</div><div class="stat-key">Hours</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TIP CALCULATOR ── -->
+  <div class="card" id="tab-tip">
+    <div class="card-eyebrow">Tip Calculator</div>
+    <div class="card-title">Split the bill</div>
+    <div class="card-sub">Never stress over restaurant math again</div>
+
+    <label for="bill">Bill amount ($)</label>
+    <input type="number" id="bill" placeholder="0.00" min="0" step="0.01"/>
+
+    <label>Tip percentage</label>
+    <div class="tip-row" id="tip-btns">
+      <button class="tip-pct-btn" data-pct="10">10%</button>
+      <button class="tip-pct-btn active" data-pct="15">15%</button>
+      <button class="tip-pct-btn" data-pct="18">18%</button>
+      <button class="tip-pct-btn" data-pct="20">20%</button>
+      <button class="tip-pct-btn" data-pct="25">25%</button>
+    </div>
+
+    <label for="custom-tip">Or enter custom tip %</label>
+    <input type="number" id="custom-tip" placeholder="e.g. 22" min="0" max="100"/>
+
+    <label for="people">Number of people</label>
+    <input type="number" id="people" placeholder="1" min="1" value="1"/>
+
+    <div class="error-msg" id="tip-error">Please enter a valid bill amount.</div>
+
+    <button class="btn btn-tip" id="tip-btn">💡 Calculate Tip</button>
+
+    <div class="tip-result" id="tip-result">
+      <hr class="divider"/>
+      <div class="tip-cards">
+        <div class="tip-card"><div class="tip-card-val" id="tip-amount">—</div><div class="tip-card-lbl">Tip amount</div></div>
+        <div class="tip-card"><div class="tip-card-val" id="total-amount">—</div><div class="tip-card-lbl">Total bill</div></div>
+        <div class="tip-card highlight"><div class="tip-card-val" id="per-person">—</div><div class="tip-card-lbl">Per person</div></div>
+        <div class="tip-card"><div class="tip-card-val" id="tip-per-person">—</div><div class="tip-card-lbl">Tip / person</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STANDARD CALCULATOR ── -->
+  <div class="card" id="tab-calc">
+    <div class="card-eyebrow">Calculator</div>
+    <div class="card-title">Do the math</div>
+    <div class="card-sub">Clean, fast, keyboard-friendly</div>
+
+    <div class="calc-display">
+      <div class="calc-expr" id="calc-expr"></div>
+      <div class="calc-val" id="calc-val">0</div>
+    </div>
+
+    <div class="calc-grid">
+      <button class="calc-btn fn" data-action="clear">AC</button>
+      <button class="calc-btn fn" data-action="sign">+/−</button>
+      <button class="calc-btn fn" data-action="percent">%</button>
+      <button class="calc-btn op" data-action="op" data-val="÷">÷</button>
+
+      <button class="calc-btn num" data-action="digit" data-val="7">7</button>
+      <button class="calc-btn num" data-action="digit" data-val="8">8</button>
+      <button class="calc-btn num" data-action="digit" data-val="9">9</button>
+      <button class="calc-btn op"  data-action="op"    data-val="×">×</button>
+
+      <button class="calc-btn num" data-action="digit" data-val="4">4</button>
+      <button class="calc-btn num" data-action="digit" data-val="5">5</button>
+      <button class="calc-btn num" data-action="digit" data-val="6">6</button>
+      <button class="calc-btn op"  data-action="op"    data-val="−">−</button>
+
+      <button class="calc-btn num" data-action="digit" data-val="1">1</button>
+      <button class="calc-btn num" data-action="digit" data-val="2">2</button>
+      <button class="calc-btn num" data-action="digit" data-val="3">3</button>
+      <button class="calc-btn op"  data-action="op"    data-val="+">+</button>
+
+      <button class="calc-btn num zero" data-action="digit" data-val="0">0</button>
+      <button class="calc-btn num" data-action="dot">.</button>
+      <button class="calc-btn eq"  data-action="equals">=</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>Calcify · made with <em>love</em> for curious minds</footer>
+
+<script>
+// ── TABS ──
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── AGE CALCULATOR ──
+const today = new Date();
+const fmt = d => d.toISOString().split('T')[0];
+document.getElementById('dob').max = fmt(today);
+document.getElementById('calc-date').value = fmt(today);
+document.getElementById('calc-date').max = fmt(today);
+
+document.getElementById('age-btn').addEventListener('click', () => {
+  const dobVal  = document.getElementById('dob').value;
+  const cdVal   = document.getElementById('calc-date').value || fmt(today);
+  const errEl   = document.getElementById('dob-error');
+  if (!dobVal) { errEl.textContent = 'Please enter a valid date of birth.'; errEl.classList.add('show'); return; }
+  const dob = new Date(dobVal), cd = new Date(cdVal);
+  if (dob >= cd) { errEl.textContent = 'Date of birth must be before the calculation date.'; errEl.classList.add('show'); return; }
+  errEl.classList.remove('show');
+
+  const diffMs   = cd - dob;
+  const totalDays  = Math.floor(diffMs / 86400000);
+  const totalWeeks = Math.floor(totalDays / 7);
+  const totalHours = Math.floor(diffMs / 3600000);
+  let years = cd.getFullYear() - dob.getFullYear();
+  let months = cd.getMonth() - dob.getMonth();
+  if (months < 0) { years--; months += 12; }
+  const totalMonths = years * 12 + months;
+
+  document.getElementById('age-years').textContent   = years;
+  document.getElementById('res-months').textContent  = totalMonths.toLocaleString();
+  document.getElementById('res-weeks').textContent   = totalWeeks.toLocaleString();
+  document.getElementById('res-days').textContent    = totalDays.toLocaleString();
+  document.getElementById('res-hours').textContent   = totalHours.toLocaleString();
+  document.getElementById('age-result').classList.add('show');
+});
+
+// ── TIP CALCULATOR ──
+let selectedPct = 15;
+document.getElementById('tip-btns').addEventListener('click', e => {
+  const btn = e.target.closest('.tip-pct-btn');
+  if (!btn) return;
+  document.querySelectorAll('.tip-pct-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedPct = parseInt(btn.dataset.pct);
+  document.getElementById('custom-tip').value = '';
+});
+document.getElementById('custom-tip').addEventListener('input', () => {
+  document.querySelectorAll('.tip-pct-btn').forEach(b => b.classList.remove('active'));
+  const v = parseFloat(document.getElementById('custom-tip').value);
+  if (!isNaN(v)) selectedPct = v;
+});
+
+document.getElementById('tip-btn').addEventListener('click', () => {
+  const bill   = parseFloat(document.getElementById('bill').value);
+  const people = Math.max(1, parseInt(document.getElementById('people').value) || 1);
+  const errEl  = document.getElementById('tip-error');
+  if (isNaN(bill) || bill <= 0) { errEl.classList.add('show'); return; }
+  errEl.classList.remove('show');
+
+  const pct  = selectedPct || 15;
+  const tip  = bill * pct / 100;
+  const total = bill + tip;
+  const pp   = total / people;
+  const tpp  = tip / people;
+
+  document.getElementById('tip-amount').textContent   = '$' + tip.toFixed(2);
+  document.getElementById('total-amount').textContent = '$' + total.toFixed(2);
+  document.getElementById('per-person').textContent   = '$' + pp.toFixed(2);
+  document.getElementById('tip-per-person').textContent = '$' + tpp.toFixed(2);
+  document.getElementById('tip-result').classList.add('show');
+});
+
+// ── STANDARD CALCULATOR ──
+let cur = '0', prev = '', op = null, fresh = false;
+
+function updateDisplay(expr) {
+  const valEl = document.getElementById('calc-val');
+  valEl.textContent = cur;
+  valEl.style.fontSize = cur.length > 10 ? '1.9rem' : cur.length > 7 ? '2.3rem' : '2.8rem';
+  document.getElementById('calc-expr').textContent = expr || '';
+}
+
+document.querySelector('.calc-grid').addEventListener('click', e => {
+  const btn = e.target.closest('.calc-btn');
+  if (!btn) return;
+  const action = btn.dataset.action;
+
+  if (action === 'clear') {
+    cur = '0'; prev = ''; op = null; fresh = false; updateDisplay('');
+  } else if (action === 'digit') {
+    const d = btn.dataset.val;
+    if (fresh || cur === '0') { cur = d; fresh = false; }
+    else if (cur.length < 14) cur += d;
+    updateDisplay(prev && op ? `${prev} ${op}` : '');
+  } else if (action === 'dot') {
+    if (fresh) { cur = '0.'; fresh = false; }
+    else if (!cur.includes('.')) cur += '.';
+    updateDisplay(prev && op ? `${prev} ${op}` : '');
+  } else if (action === 'sign') {
+    cur = cur.startsWith('-') ? cur.slice(1) : cur === '0' ? '0' : '-' + cur;
+    updateDisplay(prev && op ? `${prev} ${op}` : '');
+  } else if (action === 'percent') {
+    cur = String(parseFloat(cur) / 100);
+    updateDisplay(prev && op ? `${prev} ${op}` : '');
+  } else if (action === 'op') {
+    const sym = btn.dataset.val;
+    if (op && !fresh) {
+      const res = compute(parseFloat(prev), parseFloat(cur), op);
+      cur = fmtNum(res); prev = cur;
+    } else { prev = cur; }
+    op = sym; fresh = true;
+    updateDisplay(`${prev} ${op}`);
+  } else if (action === 'equals') {
+    if (!op || !prev) return;
+    const expr = `${prev} ${op} ${cur} =`;
+    const res = compute(parseFloat(prev), parseFloat(cur), op);
+    cur = fmtNum(res); prev = ''; op = null; fresh = true;
+    updateDisplay(expr);
+  }
+});
+
+function compute(a, b, op) {
+  if (op === '+') return a + b;
+  if (op === '−') return a - b;
+  if (op === '×') return a * b;
+  if (op === '÷') return b === 0 ? NaN : a / b;
+  return b;
+}
+function fmtNum(n) {
+  if (isNaN(n) || !isFinite(n)) return 'Error';
+  return String(parseFloat(n.toPrecision(12)));
+}
+
+document.addEventListener('keydown', e => {
+  if ('0123456789'.includes(e.key)) {
+    document.querySelector(`[data-val="${e.key}"][data-action="digit"]`)?.click();
+  } else if (e.key === '.') { document.querySelector('[data-action="dot"]')?.click();
+  } else if (e.key === 'Enter' || e.key === '=') { document.querySelector('[data-action="equals"]')?.click();
+  } else if (e.key === 'Backspace' || e.key === 'Escape') { document.querySelector('[data-action="clear"]')?.click();
+  } else if (e.key === '+') { document.querySelector('[data-val="+"][data-action="op"]')?.click();
+  } else if (e.key === '-') { document.querySelector('[data-val="−"][data-action="op"]')?.click();
+  } else if (e.key === '*') { document.querySelector('[data-val="×"][data-action="op"]')?.click();
+  } else if (e.key === '/') { e.preventDefault(); document.querySelector('[data-val="÷"][data-action="op"]')?.click(); }
+});
+
+updateDisplay('');
+</script>
+</body>
+</html>
